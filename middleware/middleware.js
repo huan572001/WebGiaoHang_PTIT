@@ -1,5 +1,8 @@
 const jwt = require("jsonwebtoken");
+const { roleUser, idUser } = require("../controllers/user");
 require('dotenv').config();
+const user = require("../controllers/user");
+
 
 exports.verifyToken = (req,res,next) => {
     const token = req.get("Authorization");
@@ -10,7 +13,7 @@ exports.verifyToken = (req,res,next) => {
                 res.status(403).json("Token is not vilid");
             }
             req.User = User;
-        
+            console.log(User);
             next();
 
         });
@@ -31,6 +34,20 @@ exports.verifyTokenAndAdmin = (req,res,next) => {
     })
 };
 
+exports.verifyTokenAdmin = (req,res,next) => {
+    this.verifyToken(req,res, async () => {
+        const username = res.req.User.username;
+        const role = await user.roleUser(username)
+        console.log(role);
+        if (role === 'admin')
+        {
+            next();
+        }
+        else {
+            res.status(403).json("You are not permission!")
+        }
+    })
+};
 
 exports.verifyTokenAndCustomer = (req,res,next) => {
     this.verifyToken(req,res, () => {

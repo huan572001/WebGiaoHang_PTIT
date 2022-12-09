@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     role: {
       type: DataTypes.STRING,
     },
+    isAcctive : {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
+  }
 
   }, {
     freezeTableName: 'user',

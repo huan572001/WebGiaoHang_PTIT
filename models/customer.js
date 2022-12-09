@@ -1,3 +1,4 @@
+const { Model } = require('sequelize');
 const Sequelize = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     const Model = sequelize.define("Customer", {
@@ -26,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         birthday: {
             type: DataTypes.DATEONLY,
         },
+
     }, {
         freezeTableName: 'customer',
     });
@@ -37,13 +39,14 @@ module.exports = (sequelize, DataTypes) => {
         })
         Model.hasMany(models.Order, {
             foreignKey: 'id_Customer',
-            as: 'customer'
+            as: 'order'
         })
     }
     return Model;
 };
 
-// Post.sync({force : true}).then((data) => {
+// Model.sync({force : true})
+//.then((data) => {
 //     console.log("Successfully!")
 // }).catch((err) => {
 //   console.log(err)

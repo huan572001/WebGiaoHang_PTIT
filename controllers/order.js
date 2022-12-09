@@ -36,6 +36,8 @@ exports.createOrder = async (req, res) => {
     }
 }
 
+
+
 exports.getAllOrder = async (req, res) => {
     try {
         const username = res.req.User.username;
@@ -52,6 +54,31 @@ exports.getAllOrder = async (req, res) => {
 
         return res.status(200).json(order)
 
+    } catch (err) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Fail at auth controller: ' + err
+        })
+    }
+}
+// lay danh sach hang chua duoc giao
+exports.getAllOrderF = async (req, res) => {
+    try {
+        const username = res.req.User.username;
+        const _id = await user.idUser(username);
+        console.log(_id);
+        const __id = await user.idCustomer(_id);
+        console.log(__id);
+
+        const order = await db.Order.findAll({
+            where: {
+                id_Customer: __id,
+                status : 'false',
+            }
+        });
+
+        return res.status(200).json(order)
+        
     } catch (err) {
         return res.status(500).json({
             err: -1,
@@ -102,3 +129,21 @@ exports.editOrderF = async (req, res) => {
         })
     }
 };
+// huy don hang chua duoc giao 
+exports.deleteOrder = async(req,res) => {
+    const {id} = req.params;
+    if (!id) return res.status(404).json('Not found !')
+    try {
+        const order = await db.Order.destroy({
+            where : {id}
+        })
+        return res.status(200).json({
+            success : true,
+        })
+    } catch (err) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Fail at auth controller: ' + err
+        })
+    }
+}

@@ -26,7 +26,7 @@ exports.createCustomer = async (req, res) => {
             gender,
             notification,
             birthday,
-            userId: '4',
+            userId: _id,
         })
         return res.status(200).json(customer)
     } catch (err) {
@@ -142,3 +142,42 @@ exports.findOrder = async (req, res) => {
     }
 
 }
+
+// add dia chi lay hang Customer
+
+exports.updateCustomerSender = async (req, res) => {
+    const {
+        address,
+        phone
+    } = req.body;
+
+    const {
+        id
+    } = req.params;
+    console.log(id)
+    if (!id) return res.status(500).json({
+        msg: 'Fail!',
+    })
+    try {
+        let customer = await db.Customer.findByPk(id)
+        if (customer.id != id) {
+            return res.status(404).json('Not Found')
+        } else {
+            customer = await db.Customer.update({
+                address,
+                phone
+            }, {
+                where: {
+                    id: customer.id
+                }
+            })
+        }
+        return res.status(200).json(customer.id)
+
+    } catch (err) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Fail at auth controller: ' + err
+        })
+    }
+};

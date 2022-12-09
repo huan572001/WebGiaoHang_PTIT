@@ -49,6 +49,21 @@ exports.idCustomer = async (userId) => {
     }
 }
 
+
+
+exports.idShipper = async (userId) => {
+    try {
+        const shipper = await db.Shipper.findOne({
+            where: {
+                userId
+            }
+        })
+        return shipper.id;
+    } catch (err) {
+        reject(err)
+    }
+}
+
 // exports.idShow = async (id) => {
 //     let order= await db.Order.findByPk(id)
 //     if (order.id != id) {
