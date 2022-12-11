@@ -14,8 +14,8 @@ exports.createShipper = async (req, res) => {
     } = req.body;
 
     try {
-        const username = res.req.User.username;
-        const _id = await user.idUser(username);
+        const email = res.req.User.email;
+        const _id = await user.idUser(email);
         console.log(_id);
 
         const shipper = await db.Shipper.create({
@@ -28,9 +28,13 @@ exports.createShipper = async (req, res) => {
             birthday,
             userId: _id,
         })
-        return res.status(200).json(shipper)
+        return res.status(200).json({
+            success: true,
+            shipper
+        })
     } catch (err) {
         return res.status(500).json({
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
@@ -45,10 +49,13 @@ exports.shipperReceive = async (req, res) => {
     try {
         var order = await db.Order.findByPk(id)
         if (order.id != id) {
-            return res.status(404).json('Not Found')
+            return res.status(404).json({
+                success: false,
+                msg: 'Not Found'
+            })
         }
-        const username = res.req.User.username;
-        const _id = await user.idUser(username);
+        const email = res.req.User.email;
+        const _id = await user.idUser(email);
         console.log(_id);
         const __id = await user.idShipper(_id);
         console.log(__id);
@@ -60,9 +67,13 @@ exports.shipperReceive = async (req, res) => {
                 id: order.id
             }
         })
-        return res.status(200).json(order)
+        return res.status(200).json({
+            success: true,
+            order
+        })
     } catch (err) {
         return res.status(500).json({
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
@@ -71,8 +82,8 @@ exports.shipperReceive = async (req, res) => {
 // lay danh sach toan bo cac don hang da nhan 
 exports.getAllOrder = async (req, res) => {
     try {
-        const username = res.req.User.username;
-        const _id = await user.idUser(username);
+        const email = res.req.User.email;
+        const _id = await user.idUser(email);
         console.log(_id);
         const __id = await user.idShipper(_id);
         console.log(__id);
@@ -83,10 +94,14 @@ exports.getAllOrder = async (req, res) => {
             }
         });
 
-        return res.status(200).json(order)
+        return res.status(200).json({
+            success: true,
+            order
+        })
 
     } catch (err) {
         return res.status(500).json({
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
@@ -104,12 +119,19 @@ exports.searchOrder = async (req, res) => {
             }
         });
         if (order.id != id) {
-            return res.status(404).json('Not Found')
+            return res.status(404).json({
+                success: false,
+                msg: 'Not Found'
+            })
         } else {
-            return res.status(200).json(order)
+            return res.status(200).json({
+                success: true,
+                order
+            })
         }
     } catch (err) {
         return res.status(500).json({
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
@@ -127,19 +149,26 @@ exports.confirmOrder = async (req, res) => {
             }
         });
         if (order.id != id) {
-            return res.status(404).json('Not Found')
+            return res.status(404).json({
+                success: false,
+                msg: 'Not Found'
+            })
         } else {
             order = await db.Order.update({
-                status : 1
+                status: 1
             }, {
                 where: {
                     id: order.id
                 }
             })
         }
-        return res.status(200).json(order)
+        return res.status(200).json({
+            success: true,
+            order
+        })
     } catch (err) {
         return res.status(500).json({
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })

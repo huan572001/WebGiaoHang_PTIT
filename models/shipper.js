@@ -15,9 +15,6 @@ module.exports = (sequelize, DataTypes) => {
     phone: {
       type: DataTypes.STRING,
     },
-    email: {
-      type: DataTypes.STRING,
-    },
     gender: DataTypes.BOOLEAN,
     notification: {
       type: DataTypes.BOOLEAN,
@@ -31,14 +28,18 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Model.associate = models => {
-    Model.belongsTo(models.User, {
-      foreignKey: 'userId',
+    Model.belongsTo(models.Account, {
+       foreignKey: 'userId',
       // as:'user'
     })
     Model.hasMany(models.Order, {
       foreignKey: 'id_Shipper',
-      as: 'order'
-  })
+      //as: 'shipper'
+    })
+    // Model.hasMany(models.ReportUser, {
+    //   //foreignKey: 'idUser',
+    //   //as: 'shipper'
+    // })
   }
   return Model;
 };

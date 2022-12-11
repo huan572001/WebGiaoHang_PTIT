@@ -8,12 +8,12 @@ exports.verifyToken = (req,res,next) => {
     const token = req.get("Authorization");
     if (token) {
         const accessToken = token.split(" ")[1];
-        jwt.verify(accessToken,process.env.SECRET_KEY,(err,User) => {
+        jwt.verify(accessToken,process.env.SECRET_KEY,(err,Account) => {
             if(err) {
                 res.status(403).json("Token is not vilid");
             }
-            req.User = User;
-            console.log(User);
+            req.Account = Account;
+            console.log(Account);
             next();
 
         });
@@ -36,8 +36,8 @@ exports.verifyTokenAndAdmin = (req,res,next) => {
 
 exports.verifyTokenAdmin = (req,res,next) => {
     this.verifyToken(req,res, async () => {
-        const username = res.req.User.username;
-        const role = await user.roleUser(username)
+        const email = res.req.User.email;
+        const role = await user.roleUser(email)
         console.log(role);
         if (role === 'admin')
         {
@@ -51,7 +51,7 @@ exports.verifyTokenAdmin = (req,res,next) => {
 
 exports.verifyTokenAndCustomer = (req,res,next) => {
     this.verifyToken(req,res, () => {
-        if (req.User.username === req.params.username || req.User.role === 'customer'){
+        if (req.User.email === req.params.email || req.User.role === 'customer'){
             next();
         }
         else {

@@ -1,4 +1,4 @@
-const { createCustomer, updateCustomer, seeStatus, findOrder, updateCustomerSender } = require("../controllers/customer");
+const { createCustomer, updateCustomer, seeStatus, findOrder, updateCustomerSender, getAllCommodities } = require("../controllers/customer");
 const { createOrder, getAllOrder, editOrderF, getAllOrderF, deleteOrder } = require("../controllers/order");
 
 const router = require("express").Router();
@@ -22,7 +22,9 @@ router.delete('/delete/:id',deleteOrder)
 // chinh sua don hang chua duoc giao 3
 router.put('/updateOrder/:id',editOrderF)
 // add dia chi lay jhang va sdt
-router.put('/updateOrderSender/:id',updateCustomerSender)
+router.put('/updateOrderSender/:id',updateCustomerSender);
+// lay ra danh sach cac loai hang hoa
+router.get('/getallcommodities',getAllCommodities);
 
 
 module.exports = router;

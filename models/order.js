@@ -24,9 +24,13 @@ module.exports = (sequelize, DataTypes) => {
       status: {
         type: DataTypes.BOOLEAN
       },
-      commodities: {
+      addressCustomer: {
         type: DataTypes.STRING
       },
+      totalMoney: {
+        type: DataTypes.INTEGER
+      },
+
   }, {
     freezeTableName: 'order',
   });
@@ -34,11 +38,15 @@ module.exports = (sequelize, DataTypes) => {
   Model.associate = models => {
     Model.belongsTo(models.Customer, {
       foreignKey: 'id_Customer',
-      as:'customer'
+     // as:'customer'
     })
     Model.belongsTo(models.Shipper, {
       foreignKey: 'id_Shipper',
-      as:'shipper'
+    //  as:'shipper'
+    })
+    Model.belongsTo(models.Commodities, {
+      foreignKey: 'id_Commodities',
+     // as:'shipper'
     })
   }
   return Model;

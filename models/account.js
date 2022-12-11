@@ -1,14 +1,16 @@
 const Sequelize = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  const Model = sequelize.define("User", {
+  const Model = sequelize.define("Account", {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    username: {
+    email: {
       type: DataTypes.STRING,
       unique : true,
+      allowNull: true,
+      defaultValue: null
     },
     password: {
       type: DataTypes.STRING,
@@ -16,13 +18,12 @@ module.exports = (sequelize, DataTypes) => {
     role: {
       type: DataTypes.STRING,
     },
-    isAcctive : {
+    isAcctive:{
       type: DataTypes.BOOLEAN,
-      defaultValue: 0,
-  }
+    }
 
   }, {
-    freezeTableName: 'user',
+    freezeTableName: 'account',
   });
 
   Model.associate = models => {
@@ -30,6 +31,18 @@ module.exports = (sequelize, DataTypes) => {
     //   foreignKey: "userId",
     //   as: 'menber'
     // })
+    Model.hasOne(models.Customer, {
+      foreignKey: 'userId',
+      //as: 'customer'
+  })
+    Model.hasOne(models.Shipper, {
+      foreignKey: 'userId',
+      //as: 'shipper'
+  })
+    Model.hasOne(models.ReportUser, {
+      foreignKey: 'userId',
+      //as: 'shipper'
+  })
   }
   return Model;
 };

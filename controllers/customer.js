@@ -7,30 +7,32 @@ exports.createCustomer = async (req, res) => {
         fullname,
         address,
         phone,
-        email,
         gender,
         notification,
         birthday
     } = req.body;
 
     try {
-        const username = res.req.User.username;
-        const _id = await user.idUser(username);
+        const email = res.req.Account.email;
+        const _id = await user.idUser(email);
         console.log(_id);
 
         const customer = await db.Customer.create({
             fullname,
             address,
             phone,
-            email,
             gender,
             notification,
             birthday,
             userId: _id,
         })
-        return res.status(200).json(customer)
+        return res.status(200).json({
+            success: true,
+            customer
+        })
     } catch (err) {
         return res.status(500).json({
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
@@ -53,12 +55,16 @@ exports.updateCustomer = async (req, res) => {
     } = req.params;
     console.log(id)
     if (!id) return res.status(500).json({
-        msg: 'Fail!',
+        success: false,
+        msg: 'Not Found!',
     })
     try {
         let customer = await db.Customer.findByPk(id)
         if (customer.id != id) {
-            return res.status(404).json('Not Found')
+            return res.status(404).json({
+                success: false,
+                msg: 'Not Found'
+            })
         } else {
             customer = await db.Customer.update({
                 fullname,
@@ -74,10 +80,14 @@ exports.updateCustomer = async (req, res) => {
                 }
             })
         }
-        return res.status(200).json(customer.id)
+        return res.status(200).json({
+            success: true,
+            customer
+        })
 
     } catch (err) {
         return res.status(500).json({
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
@@ -89,6 +99,7 @@ exports.seeStatus = async (req, res) => {
         id
     } = req.params;
     if (!req.params) return res.status(404).json({
+        success: false,
         msg: 'Not Found !',
     })
     try {
@@ -99,14 +110,19 @@ exports.seeStatus = async (req, res) => {
         })
         if (!order.id) {
             return res.status(404).json({
+                success: false,
                 msg: 'Not Found !'
             })
         } else {
-            return res.status(200).json(order.status)
+            return res.status(200).json({
+                success: false,
+                data: order.status
+            })
         }
 
     } catch (err) {
         return res.status(500).json({
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
@@ -118,6 +134,7 @@ exports.findOrder = async (req, res) => {
         id
     } = req.params;
     if (!req.params) return res.status(404).json({
+        success: false,
         msg: 'Not Found !',
     })
     try {
@@ -128,14 +145,19 @@ exports.findOrder = async (req, res) => {
         })
         if (!order.id) {
             return res.status(404).json({
+                success: false,
                 msg: 'Not Found !'
             })
         } else {
-            return res.status(200).json(order)
+            return res.status(200).json({
+                success: true,
+                order
+            })
         }
 
     } catch (err) {
         return res.status(500).json({
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
@@ -156,12 +178,16 @@ exports.updateCustomerSender = async (req, res) => {
     } = req.params;
     console.log(id)
     if (!id) return res.status(500).json({
+        success: false,
         msg: 'Fail!',
     })
     try {
         let customer = await db.Customer.findByPk(id)
         if (customer.id != id) {
-            return res.status(404).json('Not Found')
+            return res.status(404).json({
+                success: false,
+                msg: 'Not Found'
+            })
         } else {
             customer = await db.Customer.update({
                 address,
@@ -172,12 +198,60 @@ exports.updateCustomerSender = async (req, res) => {
                 }
             })
         }
-        return res.status(200).json(customer.id)
+        return res.status(200).json({
+            success: true,
+            data: customer.id
+        })
 
     } catch (err) {
         return res.status(500).json({
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
     }
 };
+
+// lay ra danh sach cac loai hang hoa 
+exports.getAllCommodities = async (req, res) => {
+    try {
+        const commodities = await db.Commodities.findAll({});
+        return res.status(200).json({
+            success: true,
+            commodities
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            err: -1,
+            msg: 'Fail at auth controller: ' + err
+        })
+    }
+}
+
+// tao mot report 
+exports.createReport = async (req, res) => {
+    const {
+        content,
+        status
+    } = req.body;
+    const email = res.req.Account.email;
+    const _id = await user.idUser(email);
+    console.log(_id);
+    try {
+        const report = await db.ReportUser.create({
+            content,
+            userId: _id,
+            status,
+        })
+
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            err: -1,
+            msg: 'Fail at auth controller: ' + err
+        })
+    }
+}
+
+// chinh sua mot report 

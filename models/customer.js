@@ -1,4 +1,3 @@
-const { Model } = require('sequelize');
 const Sequelize = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     const Model = sequelize.define("Customer", {
@@ -16,9 +15,6 @@ module.exports = (sequelize, DataTypes) => {
         phone: {
             type: DataTypes.STRING,
         },
-        email: {
-            type: DataTypes.STRING,
-        },
         gender: DataTypes.BOOLEAN,
         notification: {
             type: DataTypes.BOOLEAN,
@@ -27,27 +23,19 @@ module.exports = (sequelize, DataTypes) => {
         birthday: {
             type: DataTypes.DATEONLY,
         },
-
     }, {
         freezeTableName: 'customer',
     });
 
     Model.associate = models => {
-        Model.belongsTo(models.User, {
+        Model.belongsTo(models.Account, {
             foreignKey: 'userId',
-            // as:'user'
+            //as:'user'
         })
         Model.hasMany(models.Order, {
             foreignKey: 'id_Customer',
-            as: 'order'
+            //as: 'customer'
         })
     }
     return Model;
 };
-
-// Model.sync({force : true})
-//.then((data) => {
-//     console.log("Successfully!")
-// }).catch((err) => {
-//   console.log(err)
-// })
