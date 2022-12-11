@@ -22,7 +22,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     status: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0
+
     },
     addressCustomer: {
       type: DataTypes.STRING

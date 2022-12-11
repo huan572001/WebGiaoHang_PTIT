@@ -49,7 +49,7 @@ exports.createOrder = async (req, res) => {
 
 exports.getAllOrder = async (req, res) => {
     try {
-        const email = res.req.User.email;
+        const email = res.req.Account.email;
         const _id = await user.idUser(email);
         console.log(_id);
         const __id = await user.idCustomer(_id);
@@ -77,7 +77,7 @@ exports.getAllOrder = async (req, res) => {
 // lay danh sach hang chua duoc giao
 exports.getAllOrderF = async (req, res) => {
     try {
-        const email = res.req.User.email;
+        const email = res.req.Account.email;
         const _id = await user.idUser(email);
         console.log(_id);
         const __id = await user.idCustomer(_id);

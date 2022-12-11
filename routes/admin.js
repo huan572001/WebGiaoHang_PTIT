@@ -1,4 +1,4 @@
-const { getAllCustomer, getAllShipper, lockUser, getAllOrder, unLockUser, createCommodities, updateCommodities, deleteCommodities } = require("../controllers/admin");
+const { getAllCustomer, getAllShipper, lockUser, getAllOrder, unLockUser, createCommodities, updateCommodities, deleteCommodities, editReport } = require("../controllers/admin");
 const { verifyTokenAdmin } = require("../middleware/middleware");
 
 const router = require("express").Router();
@@ -18,5 +18,7 @@ const router = require("express").Router();
  router.put("/updatecommodities/:id", updateCommodities);
  // xoa mot loai hang hoa
  router.delete("/delete/:id",deleteCommodities);
+ // xac nhan report
+ router.put("/report/:id", verifyTokenAdmin,editReport);
 
 module.exports = router;

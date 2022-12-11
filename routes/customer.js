@@ -1,4 +1,4 @@
-const { createCustomer, updateCustomer, seeStatus, findOrder, updateCustomerSender, getAllCommodities } = require("../controllers/customer");
+const { createCustomer, updateCustomer, seeStatus, findOrder, updateCustomerSender, getAllCommodities, createReport, editReport, deleteReport, getAllReport } = require("../controllers/customer");
 const { createOrder, getAllOrder, editOrderF, getAllOrderF, deleteOrder } = require("../controllers/order");
 
 const router = require("express").Router();
@@ -25,6 +25,14 @@ router.put('/updateOrder/:id',editOrderF)
 router.put('/updateOrderSender/:id',updateCustomerSender);
 // lay ra danh sach cac loai hang hoa
 router.get('/getallcommodities',getAllCommodities);
+// tao mot report 
+router.post('/createreport',verifyToken,createReport);
+// update report
+router.put('/updatereport/:id',verifyToken,editReport);
+// delete report 
+router.delete('/deletereport/:id',verifyToken,deleteReport);
+// lay danh sach cac report
+router.get('/getallreport',verifyToken,getAllReport);
 
 
 module.exports = router;

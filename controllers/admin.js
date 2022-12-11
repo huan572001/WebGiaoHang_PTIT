@@ -211,3 +211,28 @@ exports.deleteCommodities = async (req, res) => {
         })
     }
 }
+
+
+// chinh sua mot report 
+
+exports.editReport = async(req,res) => {
+    const {id} = req.params;
+    try {
+        const report = await db.ReportUser.update({
+            status:1, 
+        }, {
+            where: {
+                id:id
+            }
+        })
+        return res.status(200).json({
+            success: true,
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            err: -1,
+            msg: 'Fail at auth controller: ' + err
+        })
+    }
+}

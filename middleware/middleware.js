@@ -25,7 +25,7 @@ exports.verifyToken = (req,res,next) => {
 
 exports.verifyTokenAndAdmin = (req,res,next) => {
     this.verifyToken(req,res, () => {
-        if (req.User.role === 'shipper'){
+        if (req.Account.role === 'shipper'){
             next();
         }
         else {
@@ -36,7 +36,7 @@ exports.verifyTokenAndAdmin = (req,res,next) => {
 
 exports.verifyTokenAdmin = (req,res,next) => {
     this.verifyToken(req,res, async () => {
-        const email = res.req.User.email;
+        const email = res.req.Account.email;
         const role = await user.roleUser(email)
         console.log(role);
         if (role === 'admin')
@@ -51,7 +51,7 @@ exports.verifyTokenAdmin = (req,res,next) => {
 
 exports.verifyTokenAndCustomer = (req,res,next) => {
     this.verifyToken(req,res, () => {
-        if (req.User.email === req.params.email || req.User.role === 'customer'){
+        if (req.Account.email === req.params.email || req.Account.role === 'customer'){
             next();
         }
         else {

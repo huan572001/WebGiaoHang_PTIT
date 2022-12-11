@@ -245,6 +245,11 @@ exports.createReport = async (req, res) => {
             status,
         })
 
+        return res.status(200).json({
+            success: true,
+            report
+        })
+
     } catch (err) {
         return res.status(500).json({
             success: false,
@@ -255,3 +260,71 @@ exports.createReport = async (req, res) => {
 }
 
 // chinh sua mot report 
+
+exports.editReport = async(req,res) => {
+    const {id} = req.params;
+    const {content} = req.body;
+    try {
+        const report = await db.ReportUser.update({
+            content, 
+        }, {
+            where: {
+                id:id
+            }
+        })
+        return res.status(200).json({
+            success: true,
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            err: -1,
+            msg: 'Fail at auth controller: ' + err
+        })
+    }
+}
+
+// xoa mot report 
+exports.deleteReport = async(req,res) => {
+    const {id} = req.params;
+    try {
+        const report = await db.ReportUser.destroy({
+            where: {
+                id
+            }
+        })
+        return res.status(200).json({
+            success: true,
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            err: -1,
+            msg: 'Fail at auth controller: ' + err
+        })
+    }
+}
+// lay ra danh sach report 
+exports.getAllReport = async (req, res) => {
+    try {
+        const email = res.req.Account.email;
+        const _id = await user.idUser(email);
+        console.log(_id);
+
+        const report = await db.ReportUser.findAll({
+            where: {
+                userId: _id,
+            }
+        });
+        return res.status(200).json({
+            success: true,
+            data:report
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            err: -1,
+            msg: 'Fail at auth controller: ' + err
+        })
+    }
+}
