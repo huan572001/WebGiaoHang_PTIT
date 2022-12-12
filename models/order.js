@@ -22,8 +22,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     status: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: 0
+      type: DataTypes.STRING,
+      defaultValue: "NR"
 
     },
     addressCustomer: {

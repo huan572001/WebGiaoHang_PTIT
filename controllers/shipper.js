@@ -63,7 +63,89 @@ exports.shipperReceive = async (req, res) => {
 
         order = await db.Order.update({
             id_Shipper: __id,
-            status : 0
+            status : 'R',
+        }, {
+            where: {
+                id: id
+            }
+        })
+        return res.status(200).json({
+            success: true,
+            order
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            err: -1,
+            msg: 'Fail at auth controller: ' + err
+        })
+    }
+}
+//  xac nhan da giao xong
+exports.shipperReceiveDone = async (req, res) => {
+    const {
+        id
+    } = req.params;
+
+    try {
+        const email = res.req.Account.email;
+        const _id = await user.idUser(email);
+        console.log(_id);
+        const __id = await user.idShipper(_id);
+        console.log(__id);
+
+        let order = await db.Order.findByPk(id)
+        if (order.id != id) {
+            return res.status(404).json({
+                success: false,
+                msg: 'Not Found'
+            })
+        }
+
+        order = await db.Order.update({
+            id_Shipper: __id,
+            status : 'FD',
+        }, {
+            where: {
+                id: id
+            }
+        })
+        return res.status(200).json({
+            success: true,
+            order
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            err: -1,
+            msg: 'Fail at auth controller: ' + err
+        })
+    }
+}
+// huy don 
+exports.shipperReceiveCancel = async (req, res) => {
+    const {
+        id
+    } = req.params;
+
+    try {
+        const email = res.req.Account.email;
+        const _id = await user.idUser(email);
+        console.log(_id);
+        const __id = await user.idShipper(_id);
+        console.log(__id);
+
+        let order = await db.Order.findByPk(id)
+        if (order.id != id) {
+            return res.status(404).json({
+                success: false,
+                msg: 'Not Found'
+            })
+        }
+
+        order = await db.Order.update({
+            id_Shipper: __id,
+            status : 'CD',
         }, {
             where: {
                 id: id

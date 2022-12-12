@@ -26,7 +26,7 @@ exports.createOrder = async (req, res) => {
             nameReceiver,
             addressReceiver,
             phoneReceiver,
-            status :null ,
+            status,
             addressCustomer,
             id_Commodities,
             totalMoney,
@@ -86,7 +86,7 @@ exports.getAllOrderF = async (req, res) => {
         const order = await db.Order.findAll({
             where: {
                 id_Customer: __id,
-                status: 'false',
+                status: 'NR' &&'R',
             }
         });
 
