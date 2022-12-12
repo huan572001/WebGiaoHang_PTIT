@@ -90,7 +90,14 @@ exports.getAllOrder = async (req, res) => {
         console.log(__id);
 
         const order = await db.Order.findAll({
-        });
+            where: {
+                // id_Customer
+            },
+            include: [{
+                model: db.Customer,
+                attributes: ["fullname","phone"]
+            }],
+        })
 
         return res.status(200).json({
             success: true,
@@ -208,15 +215,19 @@ exports.createReport = async (req, res) => {
 
 // chinh sua mot report 
 
-exports.editReport = async(req,res) => {
-    const {id} = req.params;
-    const {content} = req.body;
+exports.editReport = async (req, res) => {
+    const {
+        id
+    } = req.params;
+    const {
+        content
+    } = req.body;
     try {
         const report = await db.ReportUser.update({
-            content, 
+            content,
         }, {
             where: {
-                id:id
+                id: id
             }
         })
         return res.status(200).json({
@@ -232,8 +243,10 @@ exports.editReport = async(req,res) => {
 }
 
 // xoa mot report 
-exports.deleteReport = async(req,res) => {
-    const {id} = req.params;
+exports.deleteReport = async (req, res) => {
+    const {
+        id
+    } = req.params;
     try {
         const report = await db.ReportUser.destroy({
             where: {
@@ -265,7 +278,7 @@ exports.getAllReport = async (req, res) => {
         });
         return res.status(200).json({
             success: true,
-            data:report
+            data: report
         })
     } catch (err) {
         return res.status(500).json({
