@@ -26,7 +26,7 @@ exports.createOrder = async (req, res) => {
             nameReceiver,
             addressReceiver,
             phoneReceiver,
-            status,
+            status :null ,
             addressCustomer,
             id_Commodities,
             totalMoney,

@@ -62,7 +62,8 @@ exports.shipperReceive = async (req, res) => {
         }
 
         order = await db.Order.update({
-            id_Shipper: __id
+            id_Shipper: __id,
+            status : 0
         }, {
             where: {
                 id: id
