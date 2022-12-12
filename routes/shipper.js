@@ -11,7 +11,7 @@ router.get('/getall',verifyToken,getAllOrder);
 // tra cuu don hang da nhan
 router.get('/search/:id',searchOrder);
 // xac nhan tren don hang dang giao
-router.put('/status/:id',confirmOrder);
+router.put('/status/:id',verifyToken,confirmOrder);
 
 
 // tao mot report 

@@ -1,5 +1,7 @@
 const db = require("../models")
 const Order = require("../models/order")
+const Account = require("../models/account")
+
 const user = require("./user")
 
 exports.createShipper = async (req, res) => {
@@ -7,7 +9,6 @@ exports.createShipper = async (req, res) => {
         fullname,
         address,
         phone,
-        email,
         gender,
         notification,
         birthday
@@ -22,7 +23,6 @@ exports.createShipper = async (req, res) => {
             fullname,
             address,
             phone,
-            email,
             gender,
             notification,
             birthday,
@@ -47,24 +47,25 @@ exports.shipperReceive = async (req, res) => {
     } = req.params;
 
     try {
-        var order = await db.Order.findByPk(id)
-        if (order.id != id) {
-            return res.status(404).json({
-                success: false,
-                msg: 'Not Found'
-            })
-        }
         const email = res.req.Account.email;
         const _id = await user.idUser(email);
         console.log(_id);
         const __id = await user.idShipper(_id);
         console.log(__id);
 
+        let order = await db.Order.findByPk(id)
+        if (order.id != id) {
+            return res.status(404).json({
+                success: false,
+                msg: 'Not Found'
+            })
+        }
+
         order = await db.Order.update({
             id_Shipper: __id
         }, {
             where: {
-                id: order.id
+                id: id
             }
         })
         return res.status(200).json({

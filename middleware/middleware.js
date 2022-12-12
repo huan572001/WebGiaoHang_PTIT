@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const { roleUser, idUser } = require("../controllers/user");
 require('dotenv').config();
 const user = require("../controllers/user");
+const Account = require("../models/account")
 
 
 exports.verifyToken = (req,res,next) => {
