@@ -90,9 +90,6 @@ exports.getAllOrder = async (req, res) => {
         console.log(__id);
 
         const order = await db.Order.findAll({
-            where: {
-                id_Shipper: __id
-            }
         });
 
         return res.status(200).json({
