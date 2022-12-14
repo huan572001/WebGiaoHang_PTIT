@@ -55,7 +55,7 @@ exports.getAllOrder = async (req, res) => {
         const __id = await user.idCustomer(_id);
         console.log(__id);
 
-        const order = await db.Order.findAll({
+        const data = await db.Order.findAll({
             where: {
                 id_Customer: __id
             }
@@ -63,7 +63,7 @@ exports.getAllOrder = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            order
+            data
         })
 
     } catch (err) {
@@ -124,15 +124,15 @@ exports.editOrderF = async (req, res) => {
         msg: 'Fail!',
     })
     try {
-        var order = await db.Order.findByPk(id)
-        if (order.id != id) {
+        var data = await db.Order.findByPk(id)
+        if (data.id != id) {
             return res.status(404).json({
                 success: false,
                 msg: 'Not Found'
             })
         }
 
-        order = await db.Order.update({
+        data = await db.Order.update({
             nameReceiver,
             addressReceiver,
             phoneReceiver,
@@ -142,12 +142,13 @@ exports.editOrderF = async (req, res) => {
             totalmoney,
         }, {
             where: {
-                id: order.id
+                id: data.id,
+                status:'NR'
             }
         })
         return res.status(200).json({
             success: true,
-            order
+            data
         })
 
     } catch (err) {
@@ -170,7 +171,8 @@ exports.deleteOrder = async (req, res) => {
     try {
         const order = await db.Order.destroy({
             where: {
-                id
+                id,
+                status : 'NR'
             }
         })
         return res.status(200).json({

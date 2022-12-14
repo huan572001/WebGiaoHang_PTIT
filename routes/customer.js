@@ -13,7 +13,7 @@ router.get('/getstatus/:id',seeStatus)
 router.get('/getorder/:id',findOrder)
 //tao don hang moi 2
 router.post('/createorder',verifyToken,createOrder)
-// xem danh sach cac don hang 10
+// xem danh sach cac don hang chua nhan
 router.get('/getall',verifyToken,getAllOrder)
 // xem danh sach cac don hang chua duoc giao 
 router.get('/getallf',verifyToken,getAllOrderF)

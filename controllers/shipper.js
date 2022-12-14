@@ -174,7 +174,38 @@ exports.getAllOrder = async (req, res) => {
 
         const order = await db.Order.findAll({
             where: {
-                status : 'NR'
+                status:'NR'
+            },
+            include: [{
+                model: db.Customer,
+                attributes: ["fullname","phone"]
+            }],
+        })
+
+        return res.status(200).json({
+            success: true,
+            order
+        })
+
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            err: -1,
+            msg: 'Fail at auth controller: ' + err
+        })
+    }
+}
+exports.getAllOrdeReciever = async (req, res) => {
+    try {
+        const email = res.req.Account.email;
+        const _id = await user.idUser(email);
+        console.log(_id);
+        const __id = await user.idShipper(_id);
+        console.log(__id);
+
+        const order = await db.Order.findAll({
+            where: {
+                id_Shipper : __id
             },
             include: [{
                 model: db.Customer,

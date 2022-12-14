@@ -1,4 +1,4 @@
-const { createShipper, shipperReceive, getAllOrder, searchOrder, confirmOrder, createReport, editReport, deleteReport, getAllReport, shipperReceiveDone, shipperReceiveCancel } = require("../controllers/shipper");
+const { createShipper, shipperReceive, getAllOrder, searchOrder, confirmOrder, createReport, editReport, deleteReport, getAllReport, shipperReceiveDone, shipperReceiveCancel, getAllOrdeReciever } = require("../controllers/shipper");
 const { verifyToken } = require("../middleware/middleware");
 
 const router = require("express").Router();
@@ -12,6 +12,8 @@ router.put('/shipperrecieverdone/:id',verifyToken,shipperReceiveDone)
 router.put('/shipperrecievercancel/:id',verifyToken,shipperReceiveCancel)
 // in danh sach don hang
 router.get('/getall',verifyToken,getAllOrder);
+// in danh sach don hang da nhan cua shipper 
+router.get('/getallreciever',verifyToken,getAllOrdeReciever);
 // tra cuu don hang da nhan
 router.get('/search/:id',searchOrder);
 // xac nhan tren don hang dang giao
