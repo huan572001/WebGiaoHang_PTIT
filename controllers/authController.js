@@ -23,7 +23,8 @@ exports.registerService = ({
                     defaults: {
                         email,
                         password: hashPassword(password),
-                        role
+                        role,
+                        isAcctive : '1'
 
                     }
                 })

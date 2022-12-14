@@ -6,6 +6,9 @@ const Customer = require("../models/customer");
 exports.getAllCustomer = async (req, res) => {
     try {
         const data = await db.Account.findAll({
+            where: {
+                role : 'customer'
+            },
             include: [{
                 model: db.Customer,
             }],
