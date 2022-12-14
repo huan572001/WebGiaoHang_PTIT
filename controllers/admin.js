@@ -5,17 +5,18 @@ const Customer = require("../models/customer");
 // lay toan bo danh sach customer
 exports.getAllCustomer = async (req, res) => {
     try {
-        const user = await db.Account.findAll({
-            where: {
-                role: 'customer'
-            }
+        const data = await db.Account.findAll({
+            include: [{
+                model: db.Customer,
+            }],
         })
         return res.status(200).json({
-            success:true,
-            user});
+            success: true,
+            data
+        });
     } catch (err) {
         return res.status(500).json({
-            success:false,
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
@@ -25,18 +26,18 @@ exports.getAllCustomer = async (req, res) => {
 // lay toan bo danh sach shipper
 exports.getAllShipper = async (req, res) => {
     try {
-        const user = await db.Account.findAll({
-            where: {
-                role: 'shipper'
-            }
+        const data = await db.Account.findAll({
+            include: [{
+                model: db.Shipper,
+            }],
         })
         return res.status(200).json({
-            success:true,
-            user
+            success: true,
+            data
         });
     } catch (err) {
         return res.status(500).json({
-            success:false,
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
@@ -57,18 +58,19 @@ exports.lockUser = async (req, res) => {
             }
         })
         return res.status(200).json({
-            success:true,
-            user})
+            success: true,
+            user
+        })
     } catch (err) {
         return res.status(500).json({
-            success:false,
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
     }
 }
 
-exports.unLockUser = async (req,res) => {
+exports.unLockUser = async (req, res) => {
     const {
         id
     } = req.params;
@@ -82,11 +84,12 @@ exports.unLockUser = async (req,res) => {
             }
         })
         return res.status(200).json({
-            success:true,
-            user})
+            success: true,
+            user
+        })
     } catch (err) {
         return res.status(500).json({
-            success:false,
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
@@ -104,11 +107,12 @@ exports.getAllOrder = async (req, res) => {
         // })
         const data = await db.Order.findAll({})
         return res.status(200).json({
-            success:true,
-            data})
+            success: true,
+            data
+        })
     } catch (err) {
         return res.status(500).json({
-            success:false,
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
@@ -116,26 +120,29 @@ exports.getAllOrder = async (req, res) => {
 }
 
 // them mot loai hang moi
-exports.createCommodities = async (req,res) => {
-    const {name,cost} = req.body
+exports.createCommodities = async (req, res) => {
+    const {
+        name,
+        cost
+    } = req.body
     try {
         if (!name || !cost)
-        return res.status(400).json({
-            success: false,
-            err: 1,
-            msg: 'Missing inputs !'
-        })
+            return res.status(400).json({
+                success: false,
+                err: 1,
+                msg: 'Missing inputs !'
+            })
         const commodities = await db.Commodities.create({
             name,
             cost
         })
         return res.status(200).json({
-            success:true,
+            success: true,
             data: commodities
         })
     } catch (err) {
         return res.status(500).json({
-            success:false,
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
@@ -143,16 +150,21 @@ exports.createCommodities = async (req,res) => {
 }
 
 // update mot don hang
-exports.updateCommodities = async( req,res) => {
-    const {name,cost} = req.body;
-    const {id} = req.params;
+exports.updateCommodities = async (req, res) => {
+    const {
+        name,
+        cost
+    } = req.body;
+    const {
+        id
+    } = req.params;
     try {
         if (!name || !cost)
-        return res.status(400).json({
-            success: false,
-            err: 1,
-            msg: 'Missing inputs !'
-        })
+            return res.status(400).json({
+                success: false,
+                err: 1,
+                msg: 'Missing inputs !'
+            })
         if (!id) return res.status(500).json({
             success: false,
             msg: 'Not Found!',
@@ -164,21 +176,21 @@ exports.updateCommodities = async( req,res) => {
                 msg: 'Not Found'
             })
         } else {
-        commodities = await db.Commodities.update({
-            name,
-            cost, 
-        },{
-            where: {
-                id : commodities.id,
-            }
-        })
-        return res.status(200).json({
-            success:true,
-        })
-    }
+            commodities = await db.Commodities.update({
+                name,
+                cost,
+            }, {
+                where: {
+                    id: commodities.id,
+                }
+            })
+            return res.status(200).json({
+                success: true,
+            })
+        }
     } catch (err) {
         return res.status(500).json({
-            success:false,
+            success: false,
             err: -1,
             msg: 'Fail at auth controller: ' + err
         })
@@ -215,14 +227,16 @@ exports.deleteCommodities = async (req, res) => {
 
 // chinh sua mot report 
 
-exports.editReport = async(req,res) => {
-    const {id} = req.params;
+exports.editReport = async (req, res) => {
+    const {
+        id
+    } = req.params;
     try {
         const report = await db.ReportUser.update({
-            status:1, 
+            status: 1,
         }, {
             where: {
-                id:id
+                id: id
             }
         })
         return res.status(200).json({

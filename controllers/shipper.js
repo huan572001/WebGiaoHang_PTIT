@@ -174,7 +174,7 @@ exports.getAllOrder = async (req, res) => {
 
         const order = await db.Order.findAll({
             where: {
-                // id_Customer
+                status : 'NR'
             },
             include: [{
                 model: db.Customer,
