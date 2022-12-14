@@ -5,7 +5,7 @@ const Customer = require("../models/customer");
 // lay toan bo danh sach customer
 exports.getAllCustomer = async (req, res) => {
     try {
-        const user = await db.User.findAll({
+        const user = await db.Account.findAll({
             where: {
                 role: 'customer'
             }
@@ -25,7 +25,7 @@ exports.getAllCustomer = async (req, res) => {
 // lay toan bo danh sach shipper
 exports.getAllShipper = async (req, res) => {
     try {
-        const user = await db.User.findAll({
+        const user = await db.Account.findAll({
             where: {
                 role: 'shipper'
             }
@@ -49,7 +49,7 @@ exports.lockUser = async (req, res) => {
     } = req.params;
 
     try {
-        const user = await db.User.update({
+        const user = await db.Account.update({
             isAcctive: 1,
         }, {
             where: {
@@ -74,7 +74,7 @@ exports.unLockUser = async (req,res) => {
     } = req.params;
 
     try {
-        const user = await db.User.update({
+        const user = await db.Account.update({
             isAcctive: 0,
         }, {
             where: {
